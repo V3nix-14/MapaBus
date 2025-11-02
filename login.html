@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - MapaBus</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <header>
+    MapaBus: Rota de Ônibus Escolar de Solonópole
+  </header>
+
+  <main>
+    <section class="intro">
+      <div class="card">
+        <h2>🔑 Entrar na conta</h2>
+        <form onsubmit="event.preventDefault(); entrarConta();">
+          <label for="login-email">E-mail:</label>
+          <input type="email" id="login-email" required>
+
+          <label for="login-password">Senha:</label>
+          <input type="password" id="login-password" required>
+
+          <button type="submit">Entrar</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>🆕 Criar conta</h2>
+        <form onsubmit="event.preventDefault(); criarConta();">
+          <label for="signup-name">Nome:</label>
+          <input type="text" id="signup-name" required>
+
+          <label for="signup-email">E-mail:</label>
+          <input type="email" id="signup-email" required>
+
+          <label for="signup-password">Senha:</label>
+          <input type="password" id="signup-password" required>
+
+          <button type="submit">Criar conta</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © 2025 MapaBus - Solonópole | Todos os direitos reservados
+  </footer>
+</body>
+</html>

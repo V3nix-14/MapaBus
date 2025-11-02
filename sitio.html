@@ -1,0 +1,92 @@
+<!DOCTYPE html><!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MapaBus - Rotas do Sítio</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Estilo extra só para o mapa */
+    body {
+      background-color: #f4faff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #0056b3;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 1.3em;
+      font-weight: bold;
+    }
+
+    main {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .map-container {
+      margin-top: 20px;
+      border: 4px solid #0056b3;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    iframe {
+      width: 100%;
+      height: 400px;
+      border: none;
+    }
+
+    button {
+      margin-top: 20px;
+      background-color: #ffcc00;
+      color: #000;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #ffc107;
+    }
+  </style>
+</head>
+<body>
+
+  <header>🚌 MapaBus - Rotas do Sítio</header>
+
+  <main>
+    <h2>Rotas Rurais de Solonópole</h2>
+    <p>Abaixo está o mapa das rotas escolares da zona rural. Em breve serão adicionados os pontos de parada e trajetos detalhados.</p>
+
+    <div class="map-container">
+      <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d20052.51587242369!2d-39.008!3d-5.734!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7c75be1f4b58cb1%3A0xb3e6e282540a7f54!2sSolon%C3%B3pole%2C%20CE!5e1!3m2!1spt-BR!2sbr!4v1698799999999"
+        allowfullscreen="" loading="lazy">
+      </iframe>
+    </div>
+
+    <button onclick="window.location.href='painel.html'">⬅️ Voltar ao Painel</button>
+  </main>
+
+</body>
+</html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+</head>
+
+<body>
+  
+</body>
+
+</html>
