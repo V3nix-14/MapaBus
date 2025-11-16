@@ -3,21 +3,47 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Login - MapaBus</title>
-
+  <title>Entrar - MapaBus</title>
   <link rel="stylesheet" href="style.css" />
+
+  <!-- Firebase (import via module) -->
+  <script type="module">
+    // Importa Firebase App e Auth via CDN módulo
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } 
+      from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+
+    // Configuração do seu Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyDF_wuc7k-J39LtzCtos8E9ukMvEKRiWs0",
+      authDomain: "mapabus-2c7fd.firebaseapp.com",
+      projectId: "mapabus-2c7fd",
+      storageBucket: "mapabus-2c7fd.firebasestorage.app",
+      messagingSenderId: "716001390512",
+      appId: "1:716001390512:web:66514bb7962485e23a3075"
+    };
+
+    // Inicializa
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth();
+
+    // Exporta funções para script.js conseguir acessar
+    window._firebaseAuth = auth;
+    window._firebaseCreateUser = createUserWithEmailAndPassword;
+    window._firebaseLogin = signInWithEmailAndPassword;
+  </script>
+
+  <!-- Seu script -->
+  <script defer src="script.js"></script>
 </head>
 
 <body>
-
-  <!-- HEADER -->
   <header class="header-top">
     <div class="header-left">
-      <img src="logo.png" alt="Logo MapaBus">
-
+      <img src="logo.png" alt="MapaBus">
       <div>
         <div class="header-title">MapaBus</div>
-        <div class="header-subtitle">Acesso ao sistema</div>
+        <div style="font-size:12px; opacity:0.8;">Acesso ao sistema</div>
       </div>
     </div>
 
@@ -26,17 +52,15 @@
     </div>
   </header>
 
-  <!-- LOGIN -->
   <main class="container login-wrapper">
-
-    <h2 class="login-main-title">Acesse sua conta</h2>
+    <h2 style="text-align:center; color:#1351B4; margin-bottom:12px;">
+      Acesse sua conta
+    </h2>
 
     <div class="login-grid">
-
-      <!-- ENTRAR -->
+      <!-- LOGIN -->
       <div class="form-card">
         <h2>🔑 Entrar</h2>
-
         <form id="loginForm">
           <label for="login-email">E-mail</label>
           <input id="login-email" type="email" required>
@@ -51,7 +75,6 @@
       <!-- CRIAR CONTA -->
       <div class="form-card">
         <h2>🆕 Criar Conta</h2>
-
         <form id="signupForm">
           <label for="signup-name">Nome</label>
           <input id="signup-name" type="text" required>
@@ -65,49 +88,11 @@
           <button class="btn-secondary" type="submit">Criar conta</button>
         </form>
       </div>
-
     </div>
   </main>
 
-  <footer class="site-footer">© 2025 MapaBus - Solonópole</footer>
-
-
-  <!-- Firebase + Autenticação -->
-  <script type="module">
-    import { criarConta, entrarConta } from "./auth.js";
-
-    document.getElementById("signupForm").addEventListener("submit", (e) => {
-      e.preventDefault();
-      criarConta();
-    });
-
-    document.getElementById("loginForm").addEventListener("submit", (e) => {
-      e.preventDefault();
-      entrarConta();
-    });
-  </script>
-
-  <script src="theme.js" defer></script>
-  <script type="module" src="firebase.js"></script>
-  <script type="module" src="auth.js"></script>
-<script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyDF_wuc7k-J39LtzCtos8E9ukMvEKRiWs0",
-    authDomain: "mapabus-2c7fd.firebaseapp.com",
-    projectId: "mapabus-2c7fd",
-    storageBucket: "mapabus-2c7fd.firebasestorage.app",
-    messagingSenderId: "716001390512",
-    appId: "1:716001390512:web:66514bb7962485e23a3075"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-</script>
+  <footer class="site-footer">
+    © 2025 MapaBus - Solonópole
+  </footer>
 </body>
 </html>
