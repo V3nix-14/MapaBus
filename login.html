@@ -1,52 +1,95 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Login - MapaBus</title>
-  <link rel="stylesheet" href="style.css">
-  <script defer src="script.js"></script>
+
+  <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
-  <header>
-    MapaBus: Rota de Ônibus Escolar de Solonópole
+
+  <!-- HEADER -->
+  <header class="header-top">
+    <div class="header-left">
+      <img src="logo.png" alt="Logo MapaBus">
+
+      <div>
+        <div class="header-title">MapaBus</div>
+        <div class="header-subtitle">Acesso ao sistema</div>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <a href="index.html">Início</a>
+    </div>
   </header>
 
-  <main>
-    <section class="intro">
-      <div class="card">
-        <h2>🔑 Entrar na conta</h2>
-        <form onsubmit="event.preventDefault(); entrarConta();">
-          <label for="login-email">E-mail:</label>
-          <input type="email" id="login-email" required>
+  <!-- LOGIN -->
+  <main class="container login-wrapper">
 
-          <label for="login-password">Senha:</label>
-          <input type="password" id="login-password" required>
+    <h2 class="login-main-title">Acesse sua conta</h2>
 
-          <button type="submit">Entrar</button>
+    <div class="login-grid">
+
+      <!-- ENTRAR -->
+      <div class="form-card">
+        <h2>🔑 Entrar</h2>
+
+        <form id="loginForm">
+          <label for="login-email">E-mail</label>
+          <input id="login-email" type="email" required>
+
+          <label for="login-password">Senha</label>
+          <input id="login-password" type="password" required>
+
+          <button class="btn-primary" type="submit">Entrar</button>
         </form>
       </div>
 
-      <div class="card">
-        <h2>🆕 Criar conta</h2>
-        <form onsubmit="event.preventDefault(); criarConta();">
-          <label for="signup-name">Nome:</label>
-          <input type="text" id="signup-name" required>
+      <!-- CRIAR CONTA -->
+      <div class="form-card">
+        <h2>🆕 Criar Conta</h2>
 
-          <label for="signup-email">E-mail:</label>
-          <input type="email" id="signup-email" required>
+        <form id="signupForm">
+          <label for="signup-name">Nome</label>
+          <input id="signup-name" type="text" required>
 
-          <label for="signup-password">Senha:</label>
-          <input type="password" id="signup-password" required>
+          <label for="signup-email">E-mail</label>
+          <input id="signup-email" type="email" required>
 
-          <button type="submit">Criar conta</button>
+          <label for="signup-password">Senha</label>
+          <input id="signup-password" type="password" required>
+
+          <button class="btn-secondary" type="submit">Criar conta</button>
         </form>
       </div>
-    </section>
+
+    </div>
   </main>
 
-  <footer>
-    © 2025 MapaBus - Solonópole | Todos os direitos reservados
-  </footer>
+  <footer class="site-footer">© 2025 MapaBus - Solonópole</footer>
+
+
+  <!-- Firebase + Autenticação -->
+  <script type="module">
+    import { criarConta, entrarConta } from "./auth.js";
+
+    document.getElementById("signupForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      criarConta();
+    });
+
+    document.getElementById("loginForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      entrarConta();
+    });
+  </script>
+
+  <script src="theme.js" defer></script>
+  <script type="module" src="firebase.js"></script>
+  <script type="module" src="auth.js"></script>
+
 </body>
 </html>
