@@ -1,85 +1,67 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <head>
-    
-    <link rel="icon" type="image/png" href="logo.png">
-    
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="MapaBus - Rota de Ônibus Escolar de Solonópole. Acompanhe rotas, pontos e avisos do transporte escolar.">
-
-  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3097/3097019.png" type="image/png">
-  <link rel="stylesheet" href="style.css">
-
-  <title>MapaBus: Rota de Ônibus Escolar de Solonópole</title>
-</head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MapaBus - Rota de Ônibus Escolar</title>
+  <link rel="icon" href="logo.png" type="image/png" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="theme.js" defer></script>
+  <script defer src="script.js"></script>
 </head>
 <body>
+  <header class="header-top" role="banner">
+    <div class="header-left">
+      <img src="logo.png" alt="MapaBus - logo">
+      <div>
+        <div class="header-title">MapaBus</div>
+        <div style="font-size:12px; opacity:0.9;">Rota de Ônibus Escolar - Solonópole</div>
+      </div>
+    </div>
 
-<header class="app-header">
-  <img src="logo.png" alt="MapaBus Logo" class="app-logo">
-  <h1 class="logo-text">MapaBus</h1>
-</header>
-
-  <header>
-    MapaBus: Rota de Ônibus Escolar de Solonópole
+    <div class="header-actions" role="navigation" aria-label="principal">
+      <a href="index.html">Início</a>
+      <a href="login.html">Acessar</a>
+      <a href="sobre.html">Sobre</a>
+      <a href="contato.html">Contato</a>
+     
+     <button class="theme-btn" onclick="toggleTheme()">🌙 Modo Escuro</button>
+    </div>
   </header>
 
-  <main>
-    <section class="intro">
-      <div class="card">
-        <h2>🚌 Sobre o MapaBus</h2>
-        <p>O <strong>MapaBus</strong> foi criado para facilitar a vida de estudantes, pais e motoristas do transporte escolar. Nosso objetivo é ajudar todos a identificar por onde os ônibus passam, os horários e os pontos de parada.</p>
+  <main class="container" role="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-text">
+        <h1 id="hero-title">MapaBus — Transporte Escolar</h1>
+        <p>Organizamos rotas, pontos de parada e comunicados para o transporte escolar de Solonópole. Plataforma planejada para facilitar a vida de famílias, escolas e motoristas.</p>
+        <a class="hero-cta" href="login.html">Acessar o Sistema</a>
       </div>
+      <img class="hero-logo" src="logo.png" alt="" aria-hidden="true">
+    </section>
 
-      <div class="card">
-        <h3>🎯 1. Objetivo do site</h3>
-        <p>O MapaBus foi criado para facilitar a vida de estudantes, pais e motoristas do transporte escolar. O site ajuda a identificar por onde os ônibus passam, os horários e os pontos de parada.</p>
-      </div>
+    <section class="cards-grid" aria-label="recursos">
+      <article class="card" role="article">
+        <h3>🚌 O que é o MapaBus?</h3>
+        <p>Centralizamos informações do transporte escolar em uma plataforma simples e acessível.</p>
+      </article>
 
-      <div class="card">
-        <h3>📍 2. O que o site oferece</h3>
-        <ul>
-          <li>Trajetos atualizados</li>
-          <li>Pontos de parada</li>
-          <li>Horários e avisos importantes</li>
-        </ul>
-      </div>
+      <article class="card" role="article">
+        <h3>📍 Rotas e Paradas</h3>
+        <p>Visualização por área: sede, sítios e municípios — com mapas integrados.</p>
+      </article>
 
-      <div class="card">
-        <h3>💡 3. Benefícios para a comunidade</h3>
-        <ul>
-          <li>Planejar melhor o deslocamento dos alunos</li>
-          <li>Evitar atrasos</li>
-          <li>Garantir mais segurança e tranquilidade no transporte escolar</li>
-        </ul>
-      </div>
+      <article class="card" role="article">
+        <h3>📢 Avisos</h3>
+        <p>Comunicados oficiais publicados pela equipe responsável.</p>
+      </article>
 
-      <div class="card">
-        <h3>📢 4. Comunicação e transparência</h3>
-        <p>O site também tem o propósito de informar e aproximar escolas, motoristas e famílias. Mantemos atualizações sobre:</p>
-        <ul>
-          <li>Mudanças de rotas</li>
-          <li>Novos pontos de embarque</li>
-          <li>Avisos gerais do transporte escolar</li>
-        </ul>
-      </div>
-
-      <div class="card">
-        <h3>🌟 5. Nossa missão</h3>
-        <p>Tornar o transporte público escolar mais organizado, transparente e eficiente, ajudando todos a saber onde e quando o ônibus passa.</p>
-      </div>
-
-      <div style="text-align:center; margin-top:25px;">
-        <a href="login.html" class="btn">Acessar o MapaBus</a>
-      </div>
+      <article class="card" role="article">
+        <h3>🔒 Segurança</h3>
+        <p>Sistema preparado para integração com banco de dados e autenticação segura no futuro.</p>
+      </article>
     </section>
   </main>
 
-  <footer>
-    © 2025 MapaBus - Solonópole | Todos os direitos reservados
-  </footer>
-
+  <footer class="site-footer">© 2025 MapaBus - Solonópole</footer>
 </body>
 </html>
