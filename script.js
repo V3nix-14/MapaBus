@@ -4,7 +4,7 @@
 // =========================
 
 
-// ======== TEMA ESCURO: CARREGAR ESTADO ========
+// ======== TEMA ESCURO ========
 document.addEventListener("DOMContentLoaded", () => {
   const saved = localStorage.getItem("mapabusTheme");
   if (saved === "dark") document.body.classList.add("dark");
@@ -18,29 +18,28 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "painel.html";
   }
 
-  // atualizar nome
-  const stored = JSON.parse(localStorage.getItem("mapabusUser"));
+  // atualizar nome no painel
+  const user = JSON.parse(localStorage.getItem("mapabusUser"));
   const badge = document.getElementById("userName");
-  if (stored && badge) badge.textContent = stored.nome;
+  if (user && badge) badge.textContent = user.nome;
 
-  // botão de sair
+  // botão sair
   const logoutBtn = document.getElementById("logoutBtn");
   if (logoutBtn) {
     logoutBtn.addEventListener("click", () => {
       if (!confirm("Deseja realmente sair?")) return;
       localStorage.removeItem("mapabusLogged");
       localStorage.removeItem("mapabusUser");
-      localStorage.removeItem("mapabusUserName");
       window.location.href = "login.html";
     });
   }
 
-  // render avisos (se a página tiver)
+  // avisos (se existir div)
   renderAvisosOnPage("avisosList");
 });
 
 
-// ======== FUNÇÃO: alternar tema ========
+// ======== FUNÇÃO DO TEMA ========
 function toggleTheme() {
   const isDark = document.body.classList.toggle("dark");
   localStorage.setItem("mapabusTheme", isDark ? "dark" : "light");
@@ -48,20 +47,18 @@ function toggleTheme() {
 
 
 
-// ======== LOGIN / CRIAR CONTA ========
-
+// ======== LOGIN ========
 function criarConta() {
   const nome = document.getElementById("signup-name").value.trim();
   const email = document.getElementById("signup-email").value.trim();
   const senha = document.getElementById("signup-password").value.trim();
 
   if (!nome || !email || !senha) {
-    alert("Preencha todos os campos!");
+    alert("Preencha todos os campos.");
     return;
   }
 
-  const user = { nome, email, senha };
-  localStorage.setItem("mapabusUser", JSON.stringify(user));
+  localStorage.setItem("mapabusUser", JSON.stringify({ nome, email, senha }));
 
   alert("Conta criada com sucesso!");
   window.location.href = "login.html";
@@ -75,13 +72,12 @@ function entrarConta() {
   const stored = JSON.parse(localStorage.getItem("mapabusUser"));
 
   if (!stored) {
-    alert("Nenhuma conta cadastrada!");
+    alert("Nenhuma conta criada!");
     return;
   }
 
   if (email === stored.email && senha === stored.senha) {
     localStorage.setItem("mapabusLogged", "true");
-    localStorage.setItem("mapabusUserName", stored.nome);
     window.location.href = "painel.html";
   } else {
     alert("E-mail ou senha incorretos.");
@@ -91,18 +87,18 @@ function entrarConta() {
 
 
 // ======== AVISOS ========
-
 function renderAvisosOnPage(containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;
 
   const avisos = JSON.parse(localStorage.getItem("avisos")) || [];
-  container.innerHTML = "";
 
   if (avisos.length === 0) {
-    container.innerHTML = "<p>Nenhum aviso no momento.</p>";
+    container.innerHTML = "<p>Nenhum aviso ainda.</p>";
     return;
   }
+
+  container.innerHTML = "";
 
   avisos.forEach(av => {
     const div = document.createElement("div");
@@ -122,7 +118,6 @@ function renderAvisosOnPage(containerId) {
 
 
 // ======== ADMIN ========
-
 function adminLoginAndShow() {
   const email = document.getElementById("adminEmail").value.trim();
   const senha = document.getElementById("adminSenha").value.trim();
@@ -130,31 +125,28 @@ function adminLoginAndShow() {
   const ADMIN_EMAIL = "admin.mapabus@solonopole.gov";
   const ADMIN_PASS = "Mb@2025#Acesso!";
 
-  const formContainer = document.getElementById("formContainer");
-
   if (email === ADMIN_EMAIL && senha === ADMIN_PASS) {
     alert("Acesso liberado.");
-    formContainer.style.display = "block";
+    document.getElementById("formContainer").style.display = "block";
     renderAvisosOnPage("avisosList");
   } else {
     alert("Credenciais incorretas.");
   }
 }
 
+
 function publicarAviso() {
   const texto = document.getElementById("novoAviso").value.trim();
-
-  if (!texto) {
-    alert("Digite um aviso.");
-    return;
-  }
+  if (!texto) return alert("Digite um aviso.");
 
   const avisos = JSON.parse(localStorage.getItem("avisos")) || [];
-  avisos.unshift({ texto, data: new Date().toISOString() });
+
+  avisos.unshift({
+    texto,
+    data: new Date().toISOString()
+  });
 
   localStorage.setItem("avisos", JSON.stringify(avisos));
-
   renderAvisosOnPage("avisosList");
-
   document.getElementById("novoAviso").value = "";
 }
