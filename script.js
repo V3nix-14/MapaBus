@@ -1,45 +1,49 @@
-// =========================
-//  MapaBus - script.js
-//  Tema, Login, Avisos
-// =========================
+// ==========================================
+//  MapaBus - script.js (Firebase + Tema)
+// ==========================================
 
 
-// ======== TEMA ESCURO ========
+// ======== APLICAR TEMA SALVO ========
 document.addEventListener("DOMContentLoaded", () => {
-  const saved = localStorage.getItem("mapabusTheme");
-  if (saved === "dark") document.body.classList.add("dark");
+  const savedTheme = localStorage.getItem("mapabusTheme");
+  if (savedTheme === "dark") document.body.classList.add("dark");
 
-  const toggleBtn = document.getElementById("themeToggle");
-  if (toggleBtn) toggleBtn.addEventListener("click", toggleTheme);
+  const btn = document.getElementById("themeToggle");
+  if (btn) btn.addEventListener("click", toggleTheme);
 
-  // auto login
+  // auto redirecionar se já logado
   const logged = localStorage.getItem("mapabusLogged");
   if (logged === "true" && window.location.pathname.includes("login.html")) {
     window.location.href = "painel.html";
   }
 
   // atualizar nome no painel
-  const user = JSON.parse(localStorage.getItem("mapabusUser"));
-  const badge = document.getElementById("userName");
-  if (user && badge) badge.textContent = user.nome;
+  const userBadge = document.getElementById("userName");
+  const storedUser = localStorage.getItem("userName");
+
+  if (userBadge && storedUser) {
+    userBadge.textContent = storedUser;
+  }
 
   // botão sair
   const logoutBtn = document.getElementById("logoutBtn");
   if (logoutBtn) {
     logoutBtn.addEventListener("click", () => {
-      if (!confirm("Deseja realmente sair?")) return;
-      localStorage.removeItem("mapabusLogged");
-      localStorage.removeItem("mapabusUser");
-      window.location.href = "login.html";
+      const auth = window._firebaseAuth;
+      auth.signOut().then(() => {
+        localStorage.removeItem("mapabusLogged");
+        localStorage.removeItem("userName");
+        window.location.href = "login.html";
+      });
     });
   }
 
-  // avisos (se existir div)
+  // avisos
   renderAvisosOnPage("avisosList");
 });
 
 
-// ======== FUNÇÃO DO TEMA ========
+// ======== FUNÇÃO TEMA ========
 function toggleTheme() {
   const isDark = document.body.classList.toggle("dark");
   localStorage.setItem("mapabusTheme", isDark ? "dark" : "light");
@@ -47,8 +51,12 @@ function toggleTheme() {
 
 
 
-// ======== LOGIN ========
-function criarConta() {
+// ======================================================================
+//                         LOGIN COM FIREBASE 
+// ======================================================================
+
+// CRIAR CONTA
+async function criarConta() {
   const nome = document.getElementById("signup-name").value.trim();
   const email = document.getElementById("signup-email").value.trim();
   const senha = document.getElementById("signup-password").value.trim();
@@ -58,35 +66,54 @@ function criarConta() {
     return;
   }
 
-  localStorage.setItem("mapabusUser", JSON.stringify({ nome, email, senha }));
+  try {
+    const auth = window._firebaseAuth;
+    const createUser = window._firebaseCreateUser;
 
-  alert("Conta criada com sucesso!");
-  window.location.href = "login.html";
+    const userCredential = await createUser(auth, email, senha);
+
+    // salva nome localmente
+    localStorage.setItem("userName", nome);
+
+    alert("Conta criada com sucesso!");
+    window.location.href = "login.html";
+
+  } catch (error) {
+    alert("Erro ao criar conta: " + error.message);
+  }
 }
 
 
-function entrarConta() {
+
+// LOGIN
+async function entrarConta() {
   const email = document.getElementById("login-email").value.trim();
   const senha = document.getElementById("login-password").value.trim();
 
-  const stored = JSON.parse(localStorage.getItem("mapabusUser"));
+  try {
+    const auth = window._firebaseAuth;
+    const login = window._firebaseLogin;
 
-  if (!stored) {
-    alert("Nenhuma conta criada!");
-    return;
-  }
+    const userCredential = await login(auth, email, senha);
 
-  if (email === stored.email && senha === stored.senha) {
+    // pega nome salvo quando criou conta
+    const storedName = localStorage.getItem("userName") || "Usuário";
+
     localStorage.setItem("mapabusLogged", "true");
+
+    alert("Login realizado com sucesso!");
     window.location.href = "painel.html";
-  } else {
-    alert("E-mail ou senha incorretos.");
+
+  } catch (error) {
+    alert("Erro ao entrar: " + error.message);
   }
 }
 
 
 
-// ======== AVISOS ========
+// ======================================================================
+//                         AVISOS (AINDA LOCAL)
+// ======================================================================
 function renderAvisosOnPage(containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -103,21 +130,19 @@ function renderAvisosOnPage(containerId) {
   avisos.forEach(av => {
     const div = document.createElement("div");
     div.className = "notice";
-
     div.innerHTML = `
       <p>${av.texto}</p>
       <small style="color:#667;">
         Postado em ${new Date(av.data).toLocaleString("pt-BR")}
       </small>
     `;
-
     container.appendChild(div);
   });
 }
 
 
 
-// ======== ADMIN ========
+// ADMIN
 function adminLoginAndShow() {
   const email = document.getElementById("adminEmail").value.trim();
   const senha = document.getElementById("adminSenha").value.trim();
@@ -134,7 +159,6 @@ function adminLoginAndShow() {
   }
 }
 
-
 function publicarAviso() {
   const texto = document.getElementById("novoAviso").value.trim();
   if (!texto) return alert("Digite um aviso.");
@@ -147,6 +171,7 @@ function publicarAviso() {
   });
 
   localStorage.setItem("avisos", JSON.stringify(avisos));
+
   renderAvisosOnPage("avisosList");
   document.getElementById("novoAviso").value = "";
 }
