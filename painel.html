@@ -1,140 +1,67 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MapaBus - Painel</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4faff;
-      margin: 0;
-      padding: 0;
-    }
-
-    /* 🔝 Menu fixo */
-    nav {
-      background-color: #0056b3;
-      color: white;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      padding: 10px;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-
-    nav button {
-      background: none;
-      border: none;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      font-size: 1em;
-      transition: 0.3s;
-    }
-
-    nav button:hover {
-      color: #ffcc00;
-    }
-
-    h1 {
-      text-align: center;
-      margin-top: 40px;
-      color: #0056b3;
-    }
-
-    main {
-      padding: 20px;
-      text-align: center;
-    }
-
-    .option-btn {
-      background-color: #ffcc00;
-      border: none;
-      color: black;
-      padding: 15px 25px;
-      margin: 15px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 1.1em;
-      transition: 0.3s;
-    }
-
-    .option-btn:hover {
-      background-color: #ffc107;
-    }
-
-    #avisosBtn {
-      position: relative;
-    }
-
-    /* 🔔 Indicador de novo aviso */
-    .notificacao {
-      position: absolute;
-      top: -5px;
-      right: -10px;
-      background-color: red;
-      color: white;
-      font-size: 0.7em;
-      border-radius: 50%;
-      width: 18px;
-      height: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    footer {
-      margin-top: 40px;
-      text-align: center;
-      color: gray;
-      font-size: 0.9em;
-    }
-  </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Painel - MapaBus</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="theme.js" defer></script>
+  <script defer src="script.js"></script>
 </head>
 <body>
+  <header class="header-top">
+    <div class="header-left">
+      <img src="logo.png" alt="MapaBus">
+      <div>
+        <div class="header-title">MapaBus</div>
+        <div style="font-size:12px; opacity:0.9;">Painel administrativo</div>
+      </div>
+    </div>
 
-  <!-- 🔝 Menu fixo -->
-  <nav>
-    <button id="sitio">🏡 Sítio</button>
-    <button id="sede">🏙️ Sede</button>
-    <button id="municipios">📍 Municípios</button>
-    <button id="avisosBtn">📢 Avisos <span id="notif" class="notificacao" style="display:none;">!</span></button>
-    <button onclick="window.location.href='index.html'">🚪 Sair</button>
-  </nav>
+    <div class="header-actions">
+      <span id="userName" style="color:#ffd100; font-weight:700;">Usuário</span>
+      <button id="logoutBtn" class="btn-secondary">Sair</button>
+      
+    </div>
+  </header>
 
-  <main>
-    <h1>Bem-vindo ao Painel do MapaBus</h1>
-    <p>Escolha uma das opções acima para visualizar rotas e avisos.</p>
+  <main class="container">
+    <h2 class="dash-title">Painel Principal</h2>
+    <p class="dash-sub">Acesse as seções do sistema abaixo.</p>
+
+    <section class="dash-grid">
+      <div class="dash-card" onclick="location.href='sede.html'">
+        <h3>🏙 Sede</h3>
+        <p>Rotas e paradas da cidade.</p>
+      </div>
+
+      <div class="dash-card" onclick="location.href='sitio.html'">
+        <h3>🏡 Sítios</h3>
+        <p>Rotas da zona rural.</p>
+      </div>
+
+      <div class="dash-card" onclick="location.href='municipios.html'">
+        <h3>📍 Municípios</h3>
+        <p>Rotas por distrito.</p>
+      </div>
+
+      <div class="dash-card" onclick="location.href='avisos.html'">
+        <h3>📢 Avisos</h3>
+        <p>Gerenciar comunicados.</p>
+      </div>
+
+      <div class="dash-card">
+        <h3>📊 Estatísticas</h3>
+        <p>Em desenvolvimento.</p>
+      </div>
+
+      <div class="dash-card">
+        <h3>⚙ Configurações</h3>
+        <p>Preferências do sistema.</p>
+      </div>
+    </section>
   </main>
 
-  <footer>MapaBus - Rota de Ônibus Escolar de Solonópole © 2025</footer>
-
-  <script>
-    // --- Navegação principal ---
-    document.getElementById('sitio').addEventListener('click', () => window.location.href = 'sitio.html');
-    document.getElementById('sede').addEventListener('click', () => window.location.href = 'sede.html');
-    document.getElementById('municipios').addEventListener('click', () => window.location.href = 'municipios.html');
-    document.getElementById('avisosBtn').addEventListener('click', () => {
-      localStorage.setItem('ultimoAcessoAvisos', new Date().toISOString());
-      window.location.href = 'avisos.html';
-    });
-
-    // --- Notificação de novos avisos ---
-    const ultimoAcesso = new Date(localStorage.getItem('ultimoAcessoAvisos'));
-    const avisos = JSON.parse(localStorage.getItem('avisos')) || [];
-    const notif = document.getElementById('notif');
-
-    if (avisos.length > 0) {
-      const dataMaisRecente = new Date(avisos[0].data);
-      if (!ultimoAcesso || dataMaisRecente > ultimoAcesso) {
-        notif.style.display = 'flex';
-      }
-    }
-  </script>
+  <footer class="site-footer">© 2025 MapaBus - Solonópole</footer>
 </body>
 </html>
