@@ -1,193 +1,48 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MapaBus - Avisos</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    body {
-      background: #f4faff;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-
-    header {
-      background: #0056b3;
-      color: white;
-      text-align: center;
-      padding: 15px;
-      font-size: 1.3em;
-      font-weight: bold;
-    }
-
-    main {
-      padding: 20px;
-      max-width: 700px;
-      margin: auto;
-    }
-
-    .aviso {
-      background: white;
-      border-left: 5px solid #0056b3;
-      border-radius: 10px;
-      padding: 10px 15px;
-      margin-bottom: 15px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-
-    .aviso small {
-      color: gray;
-      font-size: 0.85em;
-      display: block;
-      margin-top: 5px;
-    }
-
-    .form-container {
-      display: none;
-      background: #fff;
-      padding: 15px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-
-    input, textarea {
-      width: 100%;
-      margin: 8px 0;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-    }
-
-    button {
-      background: #0056b3;
-      color: white;
-      padding: 8px 15px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    button:hover {
-      background: #004494;
-    }
-
-    .delete-btn {
-      background: red;
-      margin-left: 10px;
-    }
-
-    .back-btn {
-      background: #ffcc00;
-      color: black;
-      margin-top: 20px;
-    }
-  </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Avisos - MapaBus</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="theme.js" defer></script>
+  <script defer src="script.js"></script>
 </head>
-<body>
+<body onload="initPage()">
+  <header class="header-top">
+    <div class="header-left">
+      <img src="logo.png" alt="MapaBus">
+      <div><div class="header-title">MapaBus</div><div style="font-size:12px; opacity:0.9;">Avisos</div></div>
+    </div>
+    <div class="header-actions">
+      <a href="painel.html">Voltar</a>
+      
+    </div>
+  </header>
 
-  <header>📢 Avisos do Transporte Escolar</header>
+  <main class="container">
+    <h1 class="page-title">📢 Avisos do Transporte Escolar</h1>
+    <div id="avisosList" style="margin-top:12px;"></div>
 
-  <main>
-    <div id="avisosList"></div>
-
-    <button class="back-btn" onclick="window.location.href='painel.html'">⬅️ Voltar</button>
-
-    <hr>
-
+    <hr style="margin:18px 0;">
     <h3>Área de Administração</h3>
-    <p>Entre com o e-mail e senha autorizados para publicar ou apagar avisos.</p>
+    <p>Login administrativo para publicar avisos.</p>
 
-    <input type="email" id="adminEmail" placeholder="E-mail">
-    <input type="password" id="adminSenha" placeholder="Senha">
-    <button id="loginAdminBtn">Entrar</button>
+    <div style="margin-top:8px;">
+      <input id="adminEmail" placeholder="E-mail" style="padding:8px;border-radius:8px;border:1px solid #dfeafc;width:60%;max-width:320px;">
+      <input id="adminSenha" placeholder="Senha" type="password" style="padding:8px;border-radius:8px;border:1px solid #dfeafc;width:60%;max-width:320px;margin-left:8px;">
+      <button class="btn-primary" id="adminLoginBtn" onclick="adminLoginAndShow()">Entrar</button>
+    </div>
 
-    <div class="form-container" id="formContainer">
-      <h3>Novo Aviso</h3>
-      <textarea id="novoAviso" placeholder="Digite o aviso..." rows="3"></textarea>
-      <button id="addAvisoBtn">Publicar Aviso</button>
+    <div id="formContainer" style="display:none;margin-top:12px;">
+      <textarea id="novoAviso" rows="3" placeholder="Digite o aviso..." style="width:100%;padding:10px;border-radius:8px;border:1px solid #dfeafc;"></textarea>
+      <button class="btn-primary" onclick="publicarAviso()" style="margin-top:8px;">Publicar Aviso</button>
     </div>
   </main>
 
-  <script>
-    // 🔐 Credenciais seguras
-    const adminEmail = "admin.mapabus@solonopole.gov";
-    const adminSenha = "Mb@2025#Acesso!";
-
-    const avisosList = document.getElementById("avisosList");
-    const formContainer = document.getElementById("formContainer");
-    const novoAviso = document.getElementById("novoAviso");
-
-    let avisos = JSON.parse(localStorage.getItem("avisos")) || [];
-
-    function tempoDesde(data) {
-      const agora = new Date();
-      const diff = Math.floor((agora - new Date(data)) / 1000);
-      if (diff < 60) return "há poucos segundos";
-      if (diff < 3600) return `há ${Math.floor(diff / 60)} min`;
-      if (diff < 86400) return `há ${Math.floor(diff / 3600)} h`;
-      return `há ${Math.floor(diff / 86400)} dia(s)`;
-    }
-
-    function renderAvisos() {
-      avisosList.innerHTML = "";
-      avisos.forEach((aviso, index) => {
-        const avisoDiv = document.createElement("div");
-        avisoDiv.classList.add("aviso");
-
-        avisoDiv.innerHTML = `
-          <p>${aviso.texto}</p>
-          <small>🕒 Postado em ${new Date(aviso.data).toLocaleString('pt-BR')} (${tempoDesde(aviso.data)})</small>
-          ${formContainer.style.display === 'block' ? `<button class='delete-btn' onclick='deletarAviso(${index})'>Excluir</button>` : ""}
-        `;
-
-        avisosList.appendChild(avisoDiv);
-      });
-    }
-
-    document.getElementById("loginAdminBtn").addEventListener("click", () => {
-      const email = document.getElementById("adminEmail").value;
-      const senha = document.getElementById("adminSenha").value;
-
-      if (email === adminEmail && senha === adminSenha) {
-        alert("✅ Login de administrador bem-sucedido!");
-        formContainer.style.display = "block";
-        renderAvisos();
-      } else {
-        alert("❌ E-mail ou senha incorretos!");
-      }
-    });
-
-    document.getElementById("addAvisoBtn").addEventListener("click", () => {
-      if (avisos.length >= 10) {
-        alert("⚠️ Limite de 10 avisos atingido!");
-        return;
-      }
-
-      const texto = novoAviso.value.trim();
-      if (texto) {
-        const novo = {
-          texto: texto,
-          data: new Date().toISOString()
-        };
-        avisos.unshift(novo);
-        localStorage.setItem("avisos", JSON.stringify(avisos));
-        novoAviso.value = "";
-        renderAvisos();
-      }
-    });
-
-    function deletarAviso(index) {
-      if (confirm("Tem certeza que deseja excluir este aviso?")) {
-        avisos.splice(index, 1);
-        localStorage.setItem("avisos", JSON.stringify(avisos));
-        renderAvisos();
-      }
-    }
-
+  <footer class="site-footer">© 2025 MapaBus - Solonópole</footer>
+</body>
+</html>
     renderAvisos();
   </script>
 
