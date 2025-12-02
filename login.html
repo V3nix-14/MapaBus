@@ -5,42 +5,12 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Entrar - MapaBus</title>
   <link rel="stylesheet" href="style.css" />
-
-  <!-- Firebase (import via module) -->
-  <script type="module">
-    // Importa Firebase App e Auth via CDN módulo
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } 
-      from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
-
-    // Configuração do seu Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyDF_wuc7k-J39LtzCtos8E9ukMvEKRiWs0",
-      authDomain: "mapabus-2c7fd.firebaseapp.com",
-      projectId: "mapabus-2c7fd",
-      storageBucket: "mapabus-2c7fd.firebasestorage.app",
-      messagingSenderId: "716001390512",
-      appId: "1:716001390512:web:66514bb7962485e23a3075"
-    };
-
-    // Inicializa
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth();
-
-    // Exporta funções para script.js conseguir acessar
-    window._firebaseAuth = auth;
-    window._firebaseCreateUser = createUserWithEmailAndPassword;
-    window._firebaseLogin = signInWithEmailAndPassword;
-  </script>
-
-  <!-- Seu script -->
-  <script defer src="script.js"></script>
 </head>
 
 <body>
   <header class="header-top">
     <div class="header-left">
-      <img src="logo.png" alt="MapaBus">
+      <img src="logo.png" alt="MapaBus" style="width:48px;height:48px;">
       <div>
         <div class="header-title">MapaBus</div>
         <div style="font-size:12px; opacity:0.8;">Acesso ao sistema</div>
@@ -53,12 +23,9 @@
   </header>
 
   <main class="container login-wrapper">
-    <h2 style="text-align:center; color:#1351B4; margin-bottom:12px;">
-      Acesse sua conta
-    </h2>
+    <h2 style="text-align:center; color:#1351B4; margin-bottom:12px;">Acesse sua conta</h2>
 
     <div class="login-grid">
-      <!-- LOGIN -->
       <div class="form-card">
         <h2>🔑 Entrar</h2>
         <form id="loginForm">
@@ -72,7 +39,6 @@
         </form>
       </div>
 
-      <!-- CRIAR CONTA -->
       <div class="form-card">
         <h2>🆕 Criar Conta</h2>
         <form id="signupForm">
@@ -91,8 +57,20 @@
     </div>
   </main>
 
-  <footer class="site-footer">
-    © 2025 MapaBus - Solonópole
-  </footer>
+  <footer class="site-footer">© 2025 MapaBus - Solonópole</footer>
+
+  <!-- importa o firebase.js como módulo e disponibiliza as funções para o script.js -->
+  <script type="module">
+    import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from './firebase.js';
+
+    // coloca no window para script.js (não-módulo) poder usar
+    window._auth = auth;
+    window._firebaseCreateUser = createUserWithEmailAndPassword;
+    window._firebaseLogin = signInWithEmailAndPassword;
+    window._firebaseSignOut = signOut;
+  </script>
+
+  <!-- script principal (não-module) -->
+  <script defer src="script.js"></script>
 </body>
 </html>
